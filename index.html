@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="demo">
+<h2>The XMLHttpRequest Object</h2>
+<button type="button" onclick="ajaxGet()">AJAX Get</button>
+<label for="username">Username:</label>
+<input id="username" type="text"></input> 
+<button type="button" onclick="ajaxPost()">AJAX Post</button>
+</div>
+
+<script>
+function ajaxGet() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("demo").innerHTML = this.responseText;
+  }
+  xhttp.open("GET", "ajax_info.txt");
+  xhttp.send();
+}
+
+function ajaxPost() {
+    console.log('Sending data to server');
+    var username = document.getElementById("username").value;
+    fetch('http://localhost:3000/registered_users/1', {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: username.toString()  
+  })
+})
+  .then(response => response.json())
+  .then(data => console.log('Success:', data))
+  .catch(error => console.error('Error:', error));
+}
+</script>
+
+</body>
+</html>

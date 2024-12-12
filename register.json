@@ -1,0 +1,16 @@
+{
+  "registered_users": [
+    {
+      "id": "1",
+      "name": "ujhk",
+      "age": 39,
+      "gender": "Male"
+    },
+    {
+      "id": "2",
+      "name": "test23",
+      "age": 35,
+      "gender": "Female"
+    }
+  ]
+}
