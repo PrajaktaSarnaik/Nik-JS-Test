@@ -1,42 +1,68 @@
 <!DOCTYPE html>
 <html>
+
 <body>
 
-<div id="demo">
-<h2>The XMLHttpRequest Object</h2>
-<button type="button" onclick="ajaxGet()">AJAX Get</button>
-<label for="username">Username:</label>
-<input id="username" type="text"></input> 
-<button type="button" onclick="ajaxPost()">AJAX Post</button>
-</div>
+  <div id="demo">
+    <h2>The XMLHttpRequest Object</h2>
+    <button type="button" onclick="ajaxGet()">AJAX Get</button>
+    <label for="username">Username:</label>
+    <input id="username" type="text"></input>
+    <button type="button" onclick="ajaxPost()">AJAX Post</button>
+  </div>
+  <div class="container mt-5">
+    <h3>Posts</h3>
+    <ul id="postsList" class="list-group">
+      <!-- Data from JSON Server will appear here -->
+    </ul>
+  </div>
 
-<script>
-function ajaxGet() {
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function() {
-    document.getElementById("demo").innerHTML = this.responseText;
-  }
-  xhttp.open("GET", "ajax_info.txt");
-  xhttp.send();
-}
+  <script>
+    function ajaxGet() {
+      console.log('Reading data from server');
+      var username = document.getElementById("username").value;
+      // Make GET request to JSON Server
+      fetch('http://localhost:3000/registered_users/')  // Update the URL to match your endpoint
+        .then(response => response.json()) // Parse the response to JSON
+        .then(data => {
+          const postsList = document.getElementById('postsList');
+          
+          // Clear any existing content in the list
+          postsList.innerHTML = '';
+          
+          // Loop through the data and create list items for each post
+          data.forEach(registered_users => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerHTML = `<strong>${registered_users.name}</strong>: ${registered_users.id}`;
+            postsList.appendChild(listItem);
+          });
+        })
+        .catch(error => console.error('Error fetching data:', error));    
+    }
+    
 
-function ajaxPost() {
-    console.log('Sending data to server');
-    var username = document.getElementById("username").value;
-    fetch('http://localhost:3000/registered_users/1', {
-  method: 'PATCH',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    name: username.toString()  
-  })
-})
-  .then(response => response.json())
-  .then(data => console.log('Success:', data))
-  .catch(error => console.error('Error:', error));
-}
-</script>
+    function ajaxPost() {
+      console.log('Sending data to server');
+      var username = document.getElementById("username").value;
+      fetch('http://localhost:3000/registered_users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: "2",
+          name: username.toString(),
+          age: 35,
+          gender: "Female"
+        })
+      })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
 
 </body>
+
 </html>
